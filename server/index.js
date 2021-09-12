@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const FoodModel = require('./models/Food.js');
+const Food = require('./models/Food.js');
 
 const app = express();
 
@@ -27,13 +28,13 @@ app.get('/read', async (req, res) => {
 app.post('/insert', async (req, res) => {
 
     const foodName = req.body.foodName;
-    const days = req.body.days;
+    const daysSinceIAte = req.body.daysSinceIAte;
 
-    const food = new FoodModel({ foodName: foodName, daysSinceIAte: days });  
+    const food = new FoodModel({ foodName: foodName, daysSinceIAte: daysSinceIAte });  
      
     try {
         await food.save();
-        res.send('inserted data!');
+        res.send(food);
     } catch (err) {
         console.log(err);
     }
@@ -48,12 +49,10 @@ app.put('/update', async (req, res) => {
        await FoodModel.findById(id, (err, updatedFood) => {
             updatedFood.foodName = newFoodName;
             updatedFood.save();
-            res.send('update');
+            res.send(updatedFood);
         })
     } catch (err) {
-        if (err) {
-            console.log(err);
-        }
+        console.log(err);
     }
 });
 
@@ -62,12 +61,10 @@ app.delete('/delete/:id', async (req, res) => {
     const id = req.params.id;
 
     try {
-        await FoodModel.findByIdAndRemove(id).exec();
-        res.send('deleted');
+        const deletedFood = await FoodModel.findByIdAndRemove(id).exec();
+        res.send(deletedFood);
     } catch (err) {
-        if (err) {
-            console.log(err);
-        }
+        console.log(err);
     }
 });
 

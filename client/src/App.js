@@ -5,17 +5,18 @@ import './App.css';
 function App() {
 
   const [foodName, setFoodName] = useState('');
-  const [days, setDays] = useState(0);
+  const [daysSinceIAte, setDaysSinceIAte] = useState(0);
   const [foodList, setFoodList] = useState([]);
   const [newFoodName, setNewFoodName] = useState('');
 
   const foodInputRef = useRef(null);
-  const daysInputRef = useRef(null);
+  const daysSinceIAteInputRef = useRef(null);
   const newFoodInputRef = useRef(null);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/read`)
     .then(res => {
+      console.log(res.data);
       setFoodList(res.data);
     })
     .catch(err => {
@@ -26,14 +27,14 @@ function App() {
   const addToList = () => {
     axios.post(`http://localhost:3001/insert`, {
       foodName: foodName,
-      days: days,
+      daysSinceIAte: daysSinceIAte,
     })
     .then(() => {
       return axios.get(`http://localhost:3001/read`);    
     })
     .then(res => {
       foodInputRef.current.value = '';
-      daysInputRef.current.value = '';
+      daysSinceIAteInputRef.current.value = '';
       console.log(res.data)
       setFoodList(res.data);
     })
@@ -87,8 +88,8 @@ function App() {
       <label>Days Since You Ate:</label>
       <input 
       type="number" 
-      onChange={(e) => setDays(e.target.value)} 
-      ref={daysInputRef}
+      onChange={(e) => setDaysSinceIAte(e.target.value)} 
+      ref={daysSinceIAteInputRef}
       />
       <button onClick={() => addToList()}>Add To List</button>
 
