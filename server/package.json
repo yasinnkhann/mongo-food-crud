@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "cd ../client && yarn run start",
+    "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongoose": "^6.0.5",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.18"
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.2"
   }
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const FoodModel = require('./models/Food.js');
-const Food = require('./models/Food.js');
 
 const app = express();
 
@@ -11,12 +10,16 @@ const PORT = 3001;
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://yasinnkhann:password12345@crud.pwg8j.mongodb.net/food?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/foodDB', {
     useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose is connected!!!!');
 });
 
 app.get('/read', async (req, res) => {
-
     FoodModel.find({}, (err, result) => {
         if (err) {
             res.send(err);
@@ -26,7 +29,6 @@ app.get('/read', async (req, res) => {
 });
 
 app.post('/insert', async (req, res) => {
-
     const foodName = req.body.foodName;
     const daysSinceIAte = req.body.daysSinceIAte;
 
@@ -41,7 +43,6 @@ app.post('/insert', async (req, res) => {
 });
 
 app.put('/update', async (req, res) => {
-
     const newFoodName = req.body.newFoodName;
     const id = req.body.id;
 
@@ -57,7 +58,6 @@ app.put('/update', async (req, res) => {
 });
 
 app.delete('/delete/:id', async (req, res) => {
-
     const id = req.params.id;
 
     try {

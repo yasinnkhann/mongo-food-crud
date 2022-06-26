@@ -26,8 +26,8 @@ function App() {
 
   const addToList = () => {
     axios.post(`http://localhost:3001/insert`, {
-      foodName: foodName,
-      daysSinceIAte: daysSinceIAte,
+      foodName,
+      daysSinceIAte,
     })
     .then(() => {
       return axios.get(`http://localhost:3001/read`);    
@@ -45,8 +45,8 @@ function App() {
 
   const updateFood = id => {
     axios.put(`http://localhost:3001/update`, {
-      id: id,
-      newFoodName: newFoodName,
+      id,
+      newFoodName,
     })
     .then(() => {
       return axios.get(`http://localhost:3001/read`);     
